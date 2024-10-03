@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+   /*display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100hv;
+    flex-direction: column;*/
+    background: #ffeece;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #cfe2e3;
+}
+
+header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+header .right-section {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between search input and button */
+}
+
+header .search {
+    padding: 10px;
+    font-size: 16px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left; /* Align text to the left */
+    transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: space-between; /* Space between text and icon */
+    align-items: center; /* Center content vertically */
+}
+
+header .icon {
+    width: 24px; /* Adjust the size as needed */
+    height: 24px;
+    order: 1; /* Icon appears last */
+}
+
+header .text {
+    order: 0; /* Text appears first */
+}
+
+
+
+header .search:hover {
+    background-color: #d0d0d0;
+    color: #454444; /* Lighter text color on hover */
+}
+
+header #logout {
+    padding: 10px 30px; /* Adjust padding to make it oval */
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 25px; /* Set border-radius for an oval shape */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Add a transition for hover effect */
+}
+
+header #logout:hover {
+    background-color: #ff4c4c; /* Darker shade on hover */
+}
+
+.container{
+    max-width: 650px;
+    width: 100%;
+    padding: 30px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.drag-area {
+    height: 300px;
+    border: 3px dashed #e0eafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 10px auto;
+}
+
+h3 {
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.drag-area .header {
+    font-size: 20px;
+    font-weight: 500;
+    color: #34495e;
+}
+
+.drag-area .support {
+    font-size: 12px;
+    color: gray;
+    margin: 10px 0 15px 0;
+}
+
+.drag-area .button {
+    font-size: 20px;
+    font-weight: 500;
+    color: #1683ff;
+    cursor: pointer;
+}
+
+.drag-area.active {
+    border: 2px solid #1683ff;
+}
+
+.drag-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.button-s {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    padding: 30px;
+    position: relative;
+    padding: 6px 22px;
+    background: #9BC0BB;
+    border-radius: 10px;
+    color: #252525;
+    border: none;
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);   
+}
+
