@@ -63,16 +63,3 @@ function displayFile() {
         dragArea.classList.remove('active');
     }
 }
-
-
-
-// const dropArea = document.getElementById("drop-area");
-// const inputFile = document.getElementById("imput-file");
-// const imageView = document.getElementById("img-view");
-
-// inputFile.addEventListener("change", uploadImage);
-
-// function uploadImage(){
-//     let imgLink = URL.createObjectURL(inputFile.files[0]);
-//     imageView.style.backgroundImage = `url(${imgLink})`;
-// }
