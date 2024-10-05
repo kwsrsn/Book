@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #ffeece; /* Body background color */
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    background-color: #cfe2e3; /* Header background color */
+}
+
+header h1 {
+    font-size: 24px; /* Main header font size */
+    color: #333; /* Header text color */
+}
+
+header .right-section {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between search input and button */
+}
+
+header .search {
+    padding: 10px;
+    font-size: 16px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between; /* Space between text and icon */
+    align-items: center; /* Center content vertically */
+    transition: background-color 0.3s ease;
+}
+
+header .icon {
+    width: 24px; /* Adjust the size as needed */
+    height: 24px;
+}
+
+header .search:hover {
+    background-color: #d0d0d0; /* Background color on hover */
+    color: #454444; /* Lighter text color on hover */
+}
+
+header #logout {
+    display: flex;
+    padding: 10px 30px; /* Adjust padding to make it oval */
+    background-color: #ff6b6b; /* Logout button color */
+    color: white; /* Text color */
+    border: none;
+    border-radius: 25px; /* Set border-radius for an oval shape */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Add a transition for hover effect */
+}
+
+header #logout:hover {
+    background-color: #e64444; /* Darker shade on hover */
+}
+
+main {
+    padding: 20px; /* Padding for main content */
+}
+
+.container {
+    max-width: 650px; /* Max width for the container */
+    width: 100%;
+    padding: 30px;
+    background: #fff; /* Container background color */
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; /* Box shadow */
+    margin: auto; /* Center the container */
+    margin-top: 20px; /* Margin on top */
+}
+
+.drag-area {
+    height: 300px; /* Height of the drag area */
+    border: 3px dashed #e0eafc; /* Dashed border */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; /* Column layout */
+    margin: 10px auto; /* Center the drag area */
+}
+
+h3 {
+    margin-bottom: 20px; /* Margin for heading */
+    font-weight: 500; /* Font weight for headings */
+}
+
+.drag-area .header {
+    font-size: 20px; /* Font size for header in drag area */
+    font-weight: 500;
+    color: #34495e; /* Text color */
+}
+
+.drag-area .support {
+    font-size: 12px; /* Font size for support text */
+    color: gray; /* Color for support text */
+    margin: 10px 0 15px 0; /* Margin around support text */
+}
+
+.drag-area .button {
+    font-size: 20px; /* Font size for button */
+    font-weight: 500; /* Font weight */
+    color: #1683ff; /* Button color */
+    cursor: pointer; /* Cursor style */
+}
+
+.drag-area.active {
+    border: 2px solid #1683ff; /* Active state border */
+}
+
+.drag-area img {
+    width: 100%; /* Full width of the drag area */
+    height: 100%; /* Full height */
+    object-fit: contain; /* Maintain aspect ratio */
+}
+
+.button-s {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto; /* Center the button */
+    padding: 6px 22px; /* Padding */
+    background: hsl(172, 23%, 68%); /* Button background color */
+    border-radius: 10px; /* Rounded corners */
+    color: #252525; /* Text color */
+    border: none; /* Remove border */
+    font-size: 12px; /* Font size */
+    font-weight: 400; /* Font weight */
+    cursor: pointer; /* Cursor style */
+    transition: background-color 0.3s ease; /* Transition effect */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Box shadow */
+}
+
+.button-s:hover {
+    background-color: #759792; /* Darker shade on hover */
+}
+
+.close {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Align to the right */
+}
+
+.button-close {
+    margin-left: auto; /* Space out button */
+    padding: 6px 10px; /* Padding for close button */
+    background: #f9f7fb; /* Close button background color */
+    border-radius: 20px; /* Rounded corners */
+    color: #252525; /* Text color */
+    border: none; /* Remove border */
+    font-size: 14px; /* Font size */
+    font-weight: 400; /* Font weight */
+    cursor: pointer; /* Cursor style */
+    transition: background-color 0.3s ease; /* Transition effect */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.082); /* Box shadow */
+}
+
+.button-close:hover {
+    background-color: #d6d6d6; /* Darker shade on hover */
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the modal */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe; /* Modal background color */
+    margin: auto; /* Center modal content */
+    padding: 20px; /* Padding for modal content */
+    border: 1px solid #888; /* Border for modal */
+    width: 80%; /* Width of the modal */
+    border-radius: 15px;
+}
