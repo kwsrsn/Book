@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Collection</title>
+    <link rel="stylesheet" href="../static/css/mybook.css">
+</head>
+<body>
+    <header>
+        <div class="left-section">
+            <h1>My Books</h1>   
+        </div>
+        <div class="right-section">
+            <a href="/search"style="text-decoration: none;">
+                <button class="search" >
+                    <span class="text">search your book</span>
+                    <img class="icon" src="https://www.svgrepo.com/show/502892/upload-photo.svg" alt="Upload Photo" width="24" height="24" >
+                </button>
+            </a>
+            <button id="logout" onclick="logout()">LOG OUT</button>
+        </div>
+    </header>
+
+    <main>
+        <div id="loader" style="display: none;">
+            <div class="loader-message">Please wait...</div>
+        </div>
+        <div class="book-grid" id="book-grid">
+            <!-- Button for insert book -->
+            <a class="add" href="/addbook"style="text-decoration: none;">
+            <button class="book placeholder">+</button>
+            </a>
+            <!-- show book here-->
+
+            
+        </div>
+    </main>
+
+    <script src="../static/js/fetchImages.js"></script>
+    <script src="../static/js/logout.js"></script>
+</body>
+</html>

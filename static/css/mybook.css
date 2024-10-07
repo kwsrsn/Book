@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #ffeece; /* Light background color */
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #cfe2e3; /* Header background color */
+}
+
+header h1 {
+    font-size: 24px; /* Main header font size */
+    color: #333; /* Header text color */
+}
+
+header .right-section {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between search input and button */
+}
+
+header .search {
+    padding: 10px;
+    font-size: 16px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between; /* Space between text and icon */
+    align-items: center; /* Center content vertically */
+    transition: background-color 0.3s ease;
+}
+
+header .icon {
+    width: 24px; /* Icon size */
+    height: 24px;
+}
+/* Hover effect for search input */
+header .search:hover {
+    background-color: #d0d0d0;
+    color: #454444; /* Lighter text color on hover */
+}
+
+header #logout {
+    font-size: 16px;
+    display: flex;
+    align-items: center; /* Center icon and text */
+    padding: 10px 30px; /* Padding for button */
+    background-color: #ff6b6b; /* Logout button color */
+    color: white; /* Text color */
+    border: none;
+    border-radius: 25px; /* Oval shape */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Hover effect */
+}
+
+/* Hover effect for logout button */
+header #logout:hover {
+    background-color: #e64444; /* Darker shade on hover */
+}
+
+main {
+    padding: 20px; /* Padding for main content */
+}
+
+/* Centering the book grid */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive columns */
+    gap: 20px; /* Space between grid items */
+    justify-items: center; /* Center items in each grid cell */
+}
+
+.book {
+    background-color: #fff; /* Book background color */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 250px; /* Default height */
+    width: 100%; /* Full width of the grid cell */
+}
+
+.book img {
+    max-width: 100%; /* Responsive image */
+    max-height: 100%;
+    border-radius: 10px; /* Rounded corners for images */
+}
+
+.placeholder {
+    background-color: #f4e0b6; /* Placeholder background color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem; /* Placeholder text size */
+    color: rgb(251, 191, 26); /* Placeholder text color */
+    border: none;
+    cursor: pointer;
+    padding: 10px 30px; /* Padding for placeholder */
+    border-radius: 10px; /* Rounded corners */
+    text-align: center;
+    transition: background-color 0.3s ease; /* Hover effect */
+    width: 100%; /* Full width */
+}
+
+/* Hover effect for placeholder */
+.book.placeholder:hover {
+    background-color: #e6cfa6; /* Lighter background on hover */
+    color: #ffa500; /* Lighter text color on hover */
+}
+
+.add{
+    width: 100%;
+}
+
+
+#loader {
+    position: fixed; /* ติดตำแหน่งที่หน้าจอ */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5); /* พื้นหลังสีดำโปร่งใส */
+    display: flex;
+    justify-content: center; /* จัดกลางแนวนอน */
+    align-items: center; /* จัดกลางแนวตั้ง */
+    z-index: 9999; /* อยู่เหนือเนื้อหาอื่น */
+    color: rgb(0, 0, 0);
+}
+
+.loader-message {
+    font-size: 25px; /* ขนาดข้อความ */
+    text-align: center;
+}

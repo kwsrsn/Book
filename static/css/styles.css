@@ -1,0 +1,125 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f8e8d1;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #cfe2e3;
+}
+
+header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+header .right-section {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between search input and button */
+}
+
+header .search {
+    padding: 10px;
+    font-size: 16px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left; /* Align text to the left */
+    transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: space-between; /* Space between text and icon */
+    align-items: center; /* Center content vertically */
+}
+
+header .icon {
+    width: 24px; /* Adjust the size as needed */
+    height: 24px;
+    order: 1; /* Icon appears last */
+}
+
+header .text {
+    order: 0; /* Text appears first */
+}
+
+
+
+header .search:hover {
+    background-color: #d0d0d0;
+    color: #454444; /* Lighter text color on hover */
+}
+
+header #logout {
+    padding: 10px 30px; /* Adjust padding to make it oval */
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 25px; /* Set border-radius for an oval shape */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Add a transition for hover effect */
+}
+
+header #logout:hover {
+    background-color: #ff4c4c; /* Darker shade on hover */
+}
+
+main {
+    padding: 20px;
+}
+
+/* Centering the book grid */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust the number of columns automatically */
+    gap: 20px;
+    justify-items: center; /* Center items in each grid cell */
+}
+
+.book {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 250px; /* Default height */
+    width: 100%; /* Full width of the grid cell */
+}
+
+.book img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+}
+
+.book.placeholder {
+    background-color: #f4e0b6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    color: rgb(251, 191, 26);
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.book.placeholder:hover {
+    background-color: #e6cfa6;
+    color: #ffa500; /* Lighter text color on hover */
+}
+
