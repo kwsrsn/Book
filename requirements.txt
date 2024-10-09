@@ -1,0 +1,6 @@
+Flask
+firebase-admin
+Pillow
+easyocr
+requests
+roboflow
