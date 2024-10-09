@@ -12,8 +12,12 @@ from roboflow import Roboflow
 import numpy as np
 from PIL import Image as PILImage, ExifTags
 import easyocr
+import tempfile
 
 app = Flask(__name__)
+rf = Roboflow(api_key="GjIhJ9A525bYsGiVQIRA")
+project = rf.workspace("kwsr").project("book-gtby9")
+model = project.version(2).model
 
 
 # ตั้งค่าการ logging
@@ -121,9 +125,6 @@ def login():
     
 @app.route('/upload', methods=['POST'])
 def upload():
-    rf = Roboflow(api_key="GjIhJ9A525bYsGiVQIRA")
-    project = rf.workspace("kwsr").project("book-gtby9")
-    model = project.version(2).model
     logging.debug("Starting upload function")
     uid = session.get('uid')  # Get UID from session
     if not uid:
@@ -158,7 +159,7 @@ def upload():
                 logging.error(f"Error reading EXIF data: {e}")
 
 
-            img.thumbnail((300, 400))  # Resize to 800x800
+            img.thumbnail((600, 800))  # Resize to 800x800
             temp_file_path = f"./{secure_filename(file.filename)}"
             img.save(temp_file_path)  # Save the resized image temporarily
 
@@ -190,19 +191,19 @@ def upload():
 
                 # Use EasyOCR to read text from the cropped image
                 reader = easyocr.Reader(['th', 'en'])
-                ocr_result = reader.readtext(np.array(image_crop), detail=0,paragraph =True)
+                text = reader.readtext(np.array(image_crop), detail=0,paragraph =True)
+                ocr_result = " ".join(text)
                 logging.debug(f"OCR result: {ocr_result}")
 
                 # Delete the temporary file after processing
                 os.remove(temp_file_path)
                 
                 data = {
-                    'user_id': uid,
                     'image_url': image_url,
-                    'ocr_result': ocr_result,
+                    'namebook': ocr_result,
                     'timestamp': firestore.SERVER_TIMESTAMP  # Save current timestamp
                 }
-                db.collection('uploads').add(data)
+                db.collection('uploads').document(uid).collection('book').add(data)
                 logging.debug("Data saved to Firestore")
 
                 # Return success response with OCR result and the image URL
@@ -245,6 +246,135 @@ def get_images():
     except Exception as e:
         logging.error(f"Error fetching images: {str(e)}")  # Log the error
         return jsonify({"error": f"Error fetching images: {str(e)}"}), 500
+    
+    
+@app.route('/search', methods=['POST'])
+def search_page():
+    if 'file' not in request.files:
+        logging.error("No file uploaded")  # Log when no file is uploaded
+        return jsonify({"error": "No file uploaded"}), 400
+    
+    file = request.files['file']
+    uid = session.get('uid')
+    if file.filename == '':
+        logging.error("No selected file")
+        return jsonify({"error": "No selected file"}), 400
+    
+    # Log file information
+    logging.debug(f"Uploaded file: {file.filename}, type: {file.content_type}")
+    
+    # Process the uploaded file directly
+    response = process_file(file, uid)
+
+    if isinstance(response, tuple) and isinstance(response[0], dict):
+        # If response is an error response
+        return response  # Return the error response
+
+    # Assuming that response contains titles and images
+    titles, images = response
+    session['titles'] = titles
+    session['images'] = images
+
+    return jsonify({"titles": titles, "images": images})  # Return titles and images as JSON
+
+@app.route('/results')
+def results():
+    titles = session.get('titles', [])
+    images = session.get('images', [])
+
+    # Log the titles and images for debugging
+    logging.debug(f"Titles: {titles}, Images: {images}")
+
+    # Ensure both titles and images have values
+    if not titles or not images:
+        logging.warning("No titles or images found in session.")
+        return render_template('result.html', titles=[], images=[])
+
+    # Prepare a list of tuples for titles and images
+    combined_results = list(zip(titles, images))
+
+    return render_template('result.html', combined_results=combined_results)
+
+def process_file(file, uid):
+    temp_file = None  # Initialize temp_file
+    try:
+        # Create a temporary file to save the uploaded file
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
+            file.save(temp_file.name)
+            logging.debug(f"Temporary file created at: {temp_file.name}")
+
+            img = PILImage.open(temp_file.name)
+            img.thumbnail((600, 800))  # Resize the image
+            img.save(temp_file.name, format='PNG', optimize=True)  # Save with compression
+            
+            # Call the Roboflow API to get predictions
+            result = model.predict(temp_file.name, confidence=40, overlap=30).json()
+            logging.debug(f"Roboflow prediction: {result}")
+
+            if result.get('predictions'):
+                prediction = result['predictions'][0]
+                left = prediction['x'] - (prediction['width'] / 2)
+                top = prediction['y'] - (prediction['height'] / 2)
+                right = prediction['x'] + (prediction['width'] / 2)
+                bottom = prediction['y'] + (prediction['height'] / 2)
+
+                img = PILImage.open(temp_file.name)
+                image_crop = img.crop((left, top, right, bottom)).convert('L')
+                logging.debug("Image cropped successfully")
+
+                # Use EasyOCR to read text from the cropped image
+                reader = easyocr.Reader(['th', 'en'])
+                text = reader.readtext(np.array(image_crop), detail=0, paragraph=True)
+                ocr_result = " ".join(text).strip()  # Join the text
+                logging.debug(f"OCR result: {ocr_result}")
+
+                # Check if the book title exists in Firestore
+                book_titles_with_ids = check_book_title_in_firestore(uid, ocr_result)
+                if book_titles_with_ids:
+                    logging.debug(f"Book titles found: {book_titles_with_ids}")
+
+                    # Fetch book cover images from Firestore
+                    book_images = fetch_book_images(uid, book_titles_with_ids)
+
+                    # Extract only the titles for the response
+                    book_titles = [title for title, _ in book_titles_with_ids]
+
+                    return book_titles, book_images  # Return titles and images
+            
+            logging.error("No predictions found.")
+            return [], []  # Return empty if no predictions found
+    except Exception as e:
+        logging.error(f"Error processing file: {str(e)}")
+        return jsonify({"error": f"Error processing the file: {str(e)}"}), 500
+    finally:
+        # Remove the temporary file after processing
+        if temp_file and os.path.exists(temp_file.name):
+            os.remove(temp_file.name)
+            logging.debug(f"Temporary file deleted: {temp_file.name}")
+
+def check_book_title_in_firestore(uid, ocr_result):
+    field_name = 'namebook'  # Field name to check
+    try:
+        docs = db.collection('uploads').document(uid).collection('book').where(field_name, '==', ocr_result).stream()
+        titles_with_ids = [(doc.to_dict().get(field_name), doc.id) for doc in docs]  # Returns a list of tuples (namebook, document ID)
+        return titles_with_ids  # Return found titles with IDs
+    except Exception as e:
+        logging.error(f"Error querying Firestore: {str(e)}")
+        return []  # Return an empty list on error
+
+def fetch_book_images(uid, book_titles_with_ids):
+    book_images = []
+    for title, doc_id in book_titles_with_ids:
+        try:
+            doc = db.collection('uploads').document(uid).collection('book').document(doc_id).get()
+            if doc.exists:
+                data = doc.to_dict()
+                book_image_url = data.get('image_url')  # Get the image URL
+                if book_image_url:
+                    book_images.append(book_image_url)  # Append the image URL to the list
+        except Exception as e:
+            logging.error(f"Error fetching book image for {title}: {str(e)}")
+    return book_images  # Return the list of image URLs
 
 if __name__ == '__main__':
     app.run(debug=True)

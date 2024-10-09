@@ -75,6 +75,7 @@ header #logout:hover {
     background-color: #e64444; /* Darker shade on hover */
 }
 
+
 .container{
     max-width: 650px;
     width: 100%;
@@ -96,15 +97,23 @@ header #logout:hover {
 }
 
 .result img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    width: 90%; /* กำหนดความกว้างของรูปภาพ */
+    height: auto; /* ให้ความสูงอัตโนมัติ */
+    object-fit: contain; /* ปรับขนาดภาพ */
 }
 
 .result h3 {
+    font-weight: 500;
+    text-align: left; /* ทำให้ข้อความชิดซ้าย */
+    width: 100%; /* ใช้ความกว้างเต็มที่ */
+    margin: 0; /* ลบการ margin ออก */
+}
+
+.result h4 {
     font-size: 17px;
     font-weight: 400;
     padding: 10px;
+    text-align: center;
 }
 
 .close {
@@ -132,3 +141,16 @@ header #logout:hover {
 .button-close:hover{
     background-color: #d6d6d6;
 }
+
+ul {
+    list-style-type: none; 
+    padding: 0; 
+    margin: 0; 
+}
+
+li {
+    margin-bottom: 5px; 
+    display: flex; /* ใช้ flexbox สำหรับจัดเรียง */
+    flex-direction: column; /* แนวตั้ง */
+    align-items: center;
+} 

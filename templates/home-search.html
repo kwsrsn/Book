@@ -23,21 +23,18 @@
             </a>
         </div>
         <h3>Upload Image</h3>
-        
-        <div class="drag-area">
-
-            <span class="header"> Drag & Drop </span>
-            <span class="header">or <span class="button">browse</span></span>
-            <input type="file" hidden>
-            <span class="support">Supports: JPEG, JPG, PNG</span>
-        </div>
-        <div class="search">
-            <a href="result.html"style="text-decoration: none;">
-                <button class="button-s">SEARCH</button>
-            </a>
-        </div>
+        <form id='searchForm'>
+            <div class="drag-area">
+                <span class="header"> Drag & Drop </span>
+                <span class="header">or <span class="button">browse</span></span>
+                <input type="file" hidden>
+                <span class="support">Supports: JPEG, JPG, PNG</span>
+            </div>
+            <div class="search">
+                <button type="submit" class="button-s">SEARCH</button>
+            </div>
+        </form>
     </div>
     <script src="/static/js/search.js"></script>
-    <script src="/static/js/script.js"></script>
 </body>
 </html>

@@ -11,19 +11,29 @@
     <header>
         <div class="left-section">
             <h1>My Books</h1>
-        
+        </div>
     </header>
     <div class="container">
         <div class="close">
-            <a href="mybook.html"style="text-decoration: none;">
+            <a href="/mybook" style="text-decoration: none;">
                 <button class="button-close">X</button>
             </a>
         </div>
-        <div class="result">
-            <img src="/image/b1.jpg" alt="Description of image">
-            <h3>be brave little one</h3>
+        <div class="result" id="resultsContainer">
+            {% if combined_results %}
+                <h3>Found Books:</h3>
+                <ul>
+                    {% for title, image in combined_results %}
+                        <li>
+                            <img src="{{ image }}" alt="{{ title }}">
+                            <h4>{{ title }}</h4>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No books found.</p>
+            {% endif %}
         </div>
     </div>
-    <script src="../static/js/script.js"></script>
 </body>
 </html>
