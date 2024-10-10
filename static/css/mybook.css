@@ -142,6 +142,9 @@ main {
 }
 
 .loader-message {
-    font-size: 25px; /* ขนาดข้อความ */
+    margin-top: 50vh;
+    display: flex;
+    justify-content: center; /* จัดกลางแนวนอน */
+    align-items: center; /* จัดกลางแนวตั้ง */
     text-align: center;
 }

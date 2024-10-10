@@ -1,50 +1,52 @@
-async function fetchImages() {
+import { auth, storage } from '/static/js/firebase.js'; // Adjust path as necessary
+import { ref, listAll, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-storage.js"; // Import necessary functions
+
+const bookGrid = document.getElementById('book-grid');
+
+// Function to fetch images based on the logged-in user's UID
+// Function to fetch images based on the logged-in user's UID
+function fetchBookImages() {
     const loader = document.getElementById('loader');
+    loader.style.display = 'block';  // Show loader while fetching images
 
-    if (loader) {
-        loader.style.display = 'flex'; // แสดง loader
-        loader.textContent = 'Please wait...'; // แสดงข้อความ
-    }
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            const uid = user.uid;  // Get the logged-in user's UID
+            console.log('Logged in user UID:', uid); // Log user UID
 
-    // ลบข้อมูลเก่าใน Local Storage ทุกครั้งที่เริ่มโหลดใหม่
-    localStorage.removeItem('bookImages');
-
-    try {
-        const response = await fetch('/images');
-        const data = await response.json(); // โหลดข้อมูลใหม่
-
-        // บันทึกข้อมูลใน Local Storage
-        localStorage.setItem('bookImages', JSON.stringify(data));
-        displayImages(data);
-    } catch (error) {
-        console.error('Error fetching images:', error);
-    } finally {
-        if (loader) loader.style.display = 'none'; // ซ่อน loader เมื่อโหลดเสร็จ
-    }
-}
-
-function displayImages(data) {
-    const bookGrid = document.getElementById('book-grid');
-    if (!bookGrid) {
-        console.error("Element with id 'book-grid' not found.");
-        return; // ออกจากฟังก์ชันหากไม่พบ element
-    }
-
-    // ล้างภาพเก่า แต่เก็บปุ่มเพิ่ม
-    const addButton = bookGrid.querySelector('.add'); // เก็บปุ่มเพิ่ม
-    bookGrid.innerHTML = ''; // ล้างเนื้อหาเก่า
-    if (addButton) {
-        bookGrid.appendChild(addButton); // เพิ่มปุ่มกลับเข้าไป
-    }
-
-    // แสดงภาพใหม่
-    data.forEach(url => {
-        const bookDiv = document.createElement('div');
-        bookDiv.classList.add('book');
-        bookDiv.innerHTML = `<img src="${url}" alt="Book Image" loading="lazy">`; // ใช้ lazy loading
-        bookGrid.appendChild(bookDiv);
+            const userBooksRef = ref(storage, `${uid}/`);
+            listAll(userBooksRef)
+                .then((res) => {
+                    console.log('Found items:', res.items); // Log found items
+                    res.items.forEach((itemRef) => {
+                        getDownloadURL(itemRef)
+                            .then((url) => {
+                                const imgElement = document.createElement('img');
+                                imgElement.src = url;
+                                imgElement.alt = 'Book Cover';
+                                imgElement.classList.add('book');
+                                const bookContainer = document.createElement('div');
+                                bookContainer.classList.add('book-container');
+                                bookContainer.appendChild(imgElement);
+                                bookGrid.appendChild(bookContainer);
+                            })
+                            .catch((error) => {
+                                console.error('Error fetching image URL:', error);
+                            });
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error listing images:', error);
+                })
+                .finally(() => {
+                    loader.style.display = 'none';
+                });
+        } else {
+            console.log('User not logged in');
+        }
     });
 }
 
-// Call the fetchImages function on page load
-window.onload = fetchImages;
+
+// Call the function to fetch images when the page loads
+window.onload = fetchBookImages;

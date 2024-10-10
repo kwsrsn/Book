@@ -1,6 +1,6 @@
 Flask
 firebase-admin
-Pillow
 easyocr
-requests
+Pillow
+numpy
 roboflow

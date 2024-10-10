@@ -156,7 +156,12 @@ h3 {
     justify-content: flex-end; /* Align to the right */
 }
 
+a {
+    text-decoration: none;
+}
+
 .button-close {
+    text-decoration: none;
     margin-left: auto; /* Space out button */
     padding: 6px 10px; /* Padding for close button */
     background: #f9f7fb; /* Close button background color */
@@ -196,4 +201,19 @@ h3 {
     border: 1px solid #888; /* Border for modal */
     width: 80%; /* Width of the modal */
     border-radius: 15px;
+}
+
+#uploadStatus {
+    position: fixed; /* ติดตำแหน่งที่หน้าจอ */
+    top: 50%; 
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5); /* พื้นหลังสีดำโปร่งใส */
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center; /* จัดกลางแนวนอน */
+    align-items: center; /* จัดกลางแนวตั้ง */
+    z-index: 9999; /* อยู่เหนือเนื้อหาอื่น */
+    color: rgb(0, 0, 0);
 }
