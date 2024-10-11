@@ -107,6 +107,7 @@ def process_image():
 
             return jsonify({'ocr_result': ocr_result}), 200
         else:
+            os.remove(temp_file_path)
             logging.error("No predictions made by Roboflow")
             return jsonify({'error': 'No predictions made by Roboflow'}), 400
 
