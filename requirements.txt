@@ -1,5 +1,4 @@
 Flask
-firebase-admin
 easyocr
 Pillow
 numpy

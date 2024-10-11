@@ -1,4 +1,4 @@
-import {auth, doc, db, getDoc } from '/static/js/firebase.js';
+import {auth, doc, db, getDoc, collection, query, where, getDocs } from '/static/js/firebase.js';
 const dragArea = document.querySelector('.drag-area');
 const dragText = document.querySelector('.header');
 let button = document.querySelector('.button');
@@ -66,67 +66,80 @@ const form = document.getElementById('searchForm');
 form.addEventListener('submit', (event) => {
     event.preventDefault(); // Prevent the default form submission
 
-    // ตรวจสอบว่ามีไฟล์ถูกเลือกหรือไม่
+    // Check if a file has been selected
     if (!file) {
-        alert('Please select a file to upload'); // Show alert if no file is selected
+        alert('Please select a file to upload');
         return;
     }
 
     const formDatasearch = new FormData(form);
     formDatasearch.append('file', file); // Add file to FormData
 
-    // แสดงข้อความ "กำลังค้นหา..." เฉพาะเมื่อมีไฟล์
+    // Display "searching" message
     document.getElementById('searchStatus').style.display = 'flex';
+
     auth.onAuthStateChanged(async (user) => {
         if (user) {
-            const firestoreDocRef = doc(db, 'users', user.uid);
-            const firestoreDoc = await getDoc(firestoreDocRef);
-            if (firestoreDoc.exists()) {
-                const firestoreUid = firestoreDoc.data().uid; // ใช้ firestoreUid
-                formDatasearch.append('userId', firestoreUid);
-                console.log(firestoreUid)
-                
-                // Send the upload request
-                fetch('/search', {
-                    method: 'POST',
-                    body: formDatasearch
-                })
-                .then(response => {
-                    if (!response.ok) {
+            try {
+                const firestoreDocRef = doc(db, 'users', user.uid);
+                const firestoreDoc = await getDoc(firestoreDocRef);
+
+                if (firestoreDoc.exists()) {
+                    const firestoreUid = firestoreDoc.data().uid;
+
+                    // Send file to Python back-end for OCR
+                    const response = await fetch('/process-image', {
+                        method: 'POST',
+                        body: formDatasearch
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        const ocrResult = data.ocr_result;
+
+                        // Search Firestore for the extracted book title
+                        const booksCollectionRef = collection(db, "uploads", firestoreUid, "book");
+                        const q = query(booksCollectionRef, where("namebook", "==", ocrResult));
+                        const querySnapshot = await getDocs(q);
+
+                        let titles = [];
+                        let images = [];
+
+                        querySnapshot.forEach((doc) => {
+                            const bookData = doc.data();
+                            titles.push(bookData.namebook);
+                            images.push(bookData.image_url); // Assuming 'image' field contains the book cover URL
+                        });
+
+                        if (titles.length > 0 && images.length > 0) {
+                            // Encode data and redirect to results page
+                            const titlesParam = encodeURIComponent(JSON.stringify(titles));
+                            const imagesParam = encodeURIComponent(JSON.stringify(images));
+                            window.location.href = `/results?titles=${titlesParam}&images=${imagesParam}`;
+                        } else {
+                            alert('No matching book titles found.');
+                        }
+
+                        // Clear drag area and input
+                        dragArea.innerHTML = '';
+                        input.value = '';
+                        file = null;
+                    } else {
                         throw new Error('Upload failed');
                     }
-                    return response.json(); // Parse the JSON response if response is okay
-                })
-                .then(data => {
-                    if (data.titles && data.images) {
-                        const titlesParam = encodeURIComponent(JSON.stringify(data.titles));
-                        const imagesParam = encodeURIComponent(JSON.stringify(data.images));
-                        window.location.href = `/results?titles=${titlesParam}&images=${imagesParam}`; // Redirect to results page
-                    } else {
-                        alert('No matching book titles found.'); // Show error message if no titles found
-                    }
-                    // Clear the drag area and input
-                    dragArea.innerHTML = '';
-                    input.value = '';
-                    file = null;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred during the upload'); // Show error message if there's an error
-                })
-                .finally(() => {
-                    // ซ่อนข้อความสถานะเมื่อเสร็จสิ้นการประมวลผล
-                    document.getElementById('searchStatus').style.display = 'none';
-                });
-            } else {
-                console.log('No such user document!');
-                modalMessage.textContent = 'User data not found in Firestore.'; // Show message in modal
-                modal.style.display = "block"; // Show modal
+                } else {
+                    throw new Error('User data not found in Firestore.');
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById('modalMessage').textContent = `Error: ${error.message}`;
+                document.getElementById('myModal').style.display = 'block';
+            } finally {
+                document.getElementById('searchStatus').style.display = 'none'; // Hide the status message
             }
         } else {
-            console.log('User not logged in');
-            modalMessage.textContent = 'User not logged in. Please log in to upload files.'; // Show message in modal
-            modal.style.display = "block"; // Show modal
+            document.getElementById('modalMessage').textContent = 'User not logged in. Please log in to upload files.';
+            document.getElementById('myModal').style.display = 'block';
         }
     });
 });

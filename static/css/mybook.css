@@ -78,7 +78,7 @@ main {
 /* Centering the book grid */
 .book-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive columns */
+    grid-template-columns: repeat(6, minmax(150px, 1fr)); /* Responsive columns */
     gap: 20px; /* Space between grid items */
     justify-items: center; /* Center items in each grid cell */
 }
@@ -147,4 +147,14 @@ main {
     justify-content: center; /* จัดกลางแนวนอน */
     align-items: center; /* จัดกลางแนวตั้ง */
     text-align: center;
+}
+
+
+@media screen and (max-width: 767px) {
+    .book-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(150px, 1fr)); /* Responsive columns */
+        gap: 20px; /* Space between grid items */
+        justify-items: center; /* Center items in each grid cell */
+    }
 }

@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js"; // Import doc and setDoc
-import { getStorage, ref, listAll, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-storage.js";
+import { getFirestore, doc, addDoc, getDoc, collection, setDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js"; // Import doc and setDoc
+import { getStorage, ref, listAll, getDownloadURL, uploadBytes } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-storage.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -20,4 +20,4 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-export { auth, db, storage, signInWithEmailAndPassword, createUserWithEmailAndPassword, setDoc, doc, getDoc }; // Export necessary functions
+export { auth, db, storage, signInWithEmailAndPassword, createUserWithEmailAndPassword, addDoc, doc, setDoc, getDoc, ref, getDownloadURL, uploadBytes, collection, query, where, getDocs }; // Export necessary functions
