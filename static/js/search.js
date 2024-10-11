@@ -133,8 +133,10 @@ form.addEventListener('submit', (event) => {
                 }
             } catch (error) {
                 console.error(error);
-                document.getElementById('modalMessage').textContent = `Error: ${error.message}`;
-                document.getElementById('myModal').style.display = 'block';
+                alert('An error occurred: ' + error.message);
+
+                // Redirect to search page on error
+                window.location.href = '/search';
             } finally {
                 document.getElementById('searchStatus').style.display = 'none'; // Hide the status message
             }

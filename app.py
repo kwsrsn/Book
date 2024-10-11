@@ -102,9 +102,7 @@ def process_image():
             ocr_result = " ".join(text).strip()
             logging.debug(f"OCR result: {ocr_result}")
 
-            # ลบไฟล์ชั่วคราวหลังจากเสร็จสิ้น
             os.remove(temp_file_path)
-
             return jsonify({'ocr_result': ocr_result}), 200
         else:
             os.remove(temp_file_path)
@@ -112,7 +110,7 @@ def process_image():
             return jsonify({'error': 'No predictions made by Roboflow'}), 400
 
     except Exception as e:
-        logging.error(f"An error occurred: {str(e)}")  # Log ข้อผิดพลาด
+        logging.error(f"An error occurred: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
