@@ -118,6 +118,7 @@ form.addEventListener('submit', (event) => {
                             window.location.href = `/results?titles=${titlesParam}&images=${imagesParam}`;
                         } else {
                             alert('No matching book titles found.');
+                            window.location.href = '/search';
                         }
 
                         // Clear drag area and input
