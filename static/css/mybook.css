@@ -78,7 +78,7 @@ main {
 /* Centering the book grid */
 .book-grid {
     display: grid;
-    grid-template-columns: repeat(6, minmax(150px, 1fr)); /* Responsive columns */
+    grid-template-columns: repeat(6, minmax(150px, 1fr)); /* Responsive columns minmax(200px, 1fr)*/
     gap: 20px; /* Space between grid items */
     justify-items: center; /* Center items in each grid cell */
 }
@@ -91,7 +91,7 @@ main {
     justify-content: center;
     align-items: center;
     height: 250px; /* Default height */
-    width: 100%; /* Full width of the grid cell */
+    width: 100%x; /* Full width of the grid cell  width: 250px */
 }
 
 .book img {
