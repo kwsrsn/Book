@@ -1,4 +1,5 @@
-import {auth, doc, db, getDoc } from '/static/js/firebase.js';
+import { auth, doc, db, getDoc, addDoc, storage, ref, getDownloadURL, uploadBytes, collection } from '/static/js/firebase.js';
+
 const dragArea = document.querySelector('.drag-area');
 const dragText = document.querySelector('.header');
 let button = document.querySelector('.button');
@@ -6,15 +7,13 @@ let input = document.querySelector('input[type="file"]');
 let file;
 
 // Open file picker when button is clicked
-button.onclick = () => {
-    input.click();
-};
+button.onclick = () => input.click();
 
 // When a file is selected via the file picker
 input.addEventListener('change', function() {
     file = this.files[0];
     if (file) {
-        console.log('Selected file:', file); // Log selected file
+        console.log('Selected file:', file);
         dragArea.classList.add('active');
         displayFile();
     }
@@ -37,7 +36,7 @@ dragArea.addEventListener('drop', (event) => {
     event.preventDefault();
     file = event.dataTransfer.files[0];
     if (file) {
-        console.log('Dropped file:', file); // Log dropped file
+        console.log('Dropped file:', file);
         displayFile();
     }
 });
@@ -57,91 +56,83 @@ function displayFile() {
         };
         fileReader.readAsDataURL(file);
     } else {
-        alert('This file is not an Image');
+        alert('This file is not an image.');
         dragArea.classList.remove('active');
     }
 }
 
-// Get the modal and message elements
-var modal = document.getElementById("myModal");
-var modalMessage = document.getElementById('modalMessage');
-
+// Form submission logic
 const form = document.getElementById('uploadForm');
-form.addEventListener('submit', (event) => {
-    event.preventDefault(); // Prevent the default form submission
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
     if (!file) {
-        modalMessage.textContent = 'Please select a file to upload'; // Show message in modal
-        modal.style.display = "block"; // Show modal
+        document.getElementById('modalMessage').textContent = 'Please select a file to upload';
+        document.getElementById('myModal').style.display = 'block';
         return;
     }
 
-    // Show upload status message
-    document.getElementById('uploadStatus').style.display = 'flex';
+    document.getElementById('uploadStatus').style.display = 'flex'; // Show loading status
 
-    const formData = new FormData(form);
-    formData.append('file', file); // Add file to FormData
-
-    // Get the currently authenticated user
+    // Get authenticated user and Firebase Storage reference
     auth.onAuthStateChanged(async (user) => {
         if (user) {
-            const firestoreDocRef = doc(db, 'users', user.uid);
-            const firestoreDoc = await getDoc(firestoreDocRef);
-            if (firestoreDoc.exists()) {
-                const firestoreUid = firestoreDoc.data().uid; // ใช้ firestoreUid
-                formData.append('userId', firestoreUid);
-                
-                // Send the upload request
-                fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    document.getElementById('uploadStatus').style.display = 'none'; // Hide upload status message
+            try {
+                const firestoreDocRef = doc(db, 'users', user.uid);
+                const firestoreDoc = await getDoc(firestoreDocRef);
+    
+                if (firestoreDoc.exists()) {
+                    const firestoreUid = firestoreDoc.data().uid;
+                    const storageRef = ref(storage, `${firestoreUid}/${file.name}`);
+                    const snapshot = await uploadBytes(storageRef, file);
+    
+                    const downloadURL = await getDownloadURL(snapshot.ref);
+                    console.log(JSON.stringify({ image_url: downloadURL }));
+
+                    const formData = new FormData(form);
+                    formData.append('file', file);
+    
+                    // Send file URL to Python back-end for OCR
+                    const response = await fetch('/process-image', {  // ตรวจสอบ endpoint ที่นี่
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    console.log('Response Status:', response.status); // Log the response status
+                    console.log('Response OK:', response.ok); 
+    
                     if (response.ok) {
-                        return response.json(); // Parse the JSON response
+                        const data = await response.json();
+                        const ocrResult = data.ocr_result;
+    
+                        // Save OCR result and image URL to Firestore
+                        const uploadData = {
+                            image_url: downloadURL,
+                            namebook: ocrResult
+                        };
+                        await addDoc(collection(db, "uploads", firestoreUid, "book"), uploadData);
+    
+                        // Success message
+                        document.getElementById('modalMessage').textContent = 'File uploaded and processed successfully!';
+                        document.getElementById('myModal').style.display = 'block';
                     } else {
-                        return response.json().then(err => { throw new Error(err.error || 'Upload failed'); });
+                        const errorData = await response.json(); // แปลงการตอบกลับข้อผิดพลาด
+                        console.error('Error response data:', errorData); // Log the error response data
+                        throw new Error('Failed to process the image: ' + errorData.error);
                     }
-                })
-                .then(data => {
-                    modalMessage.textContent = data.message; // Set the message in modal
-                    modal.style.display = "block"; // Show the modal on success
-                    dragArea.innerHTML = ''; // Clear the drag area
-                    input.value = ''; // Clear file input
-                    file = null; // Clear the file variable
-                })
-                .catch(error => {
-                    document.getElementById('uploadStatus').style.display = 'none'; // Hide upload status message on error
-                    console.error('Error:', error);
-                    modalMessage.textContent = 'An error occurred during the upload'; // Set error message in modal
-                    modal.style.display = "block"; // Show modal
-                });
-            } else {
-                console.log('No such user document!');
-                modalMessage.textContent = 'User data not found in Firestore.'; // Show message in modal
-                modal.style.display = "block"; // Show modal
+                } else {
+                    throw new Error('User data not found in Firestore.');
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById('modalMessage').textContent = `Error: ${error.message}`;
+                document.getElementById('myModal').style.display = 'block';
+            } finally {
+                document.getElementById('uploadStatus').style.display = 'none'; // ซ่อนสถานะการอัพโหลด
             }
         } else {
-            console.log('User not logged in');
-            modalMessage.textContent = 'User not logged in. Please log in to upload files.'; // Show message in modal
-            modal.style.display = "block"; // Show modal
+            document.getElementById('modalMessage').textContent = 'User not logged in. Please log in to upload files.';
+            document.getElementById('myModal').style.display = 'block';
         }
     });
 });
-
-// Close modal logic
-const closeModalButton = document.getElementsByClassName("button-close")[0];
-
-closeModalButton.onclick = function() {
-    modal.style.display = "none"; // Close the modal
-    modalMessage.textContent = ''; // Clear the modal message
-};
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none"; // Close the modal
-        modalMessage.textContent = ''; // Clear the modal message
-    }
-};
