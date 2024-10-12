@@ -3,4 +3,4 @@ easyocr
 Pillow
 numpy
 roboflow
-streamlit
+pythainlp
