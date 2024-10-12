@@ -1,12 +1,10 @@
 from flask import Flask, request, render_template, redirect, url_for, jsonify
 from werkzeug.utils import secure_filename
 import logging
-import easyocr
+import pytesseract
 from roboflow import Roboflow
-import numpy as np
 from PIL import Image as PILImage, ExifTags
 import os
-from pythainlp import correct
 from pythainlp import word_tokenize
 
 corrections_file = "corrections.txt"
@@ -15,7 +13,6 @@ app = Flask(__name__)
 rf = Roboflow(api_key="GjIhJ9A525bYsGiVQIRA")
 project = rf.workspace("kwsr").project("book-gtby9")
 model = project.version(6).model
-reader = easyocr.Reader(['th', 'en'])
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
@@ -102,7 +99,7 @@ def process_image():
             logging.debug("Image cropped successfully")
 
             # OCR การอ่านข้อความจากภาพที่ถูกครอป
-            text = reader.readtext(np.array(image_crop), detail=0, paragraph=True)
+            text = pytesseract.image_to_string(image_crop, lang='tha+eng').strip()
             ocr_result = " ".join(text).strip()
             logging.debug(f"OCR result: {ocr_result}")
             proc = word_tokenize(ocr_result, engine='newmm')
