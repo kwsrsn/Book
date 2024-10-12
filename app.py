@@ -6,7 +6,6 @@ from roboflow import Roboflow
 import numpy as np
 from PIL import Image as PILImage, ExifTags
 import os
-from pythainlp import correct
 from pythainlp import word_tokenize
 
 corrections_file = "corrections.txt"
