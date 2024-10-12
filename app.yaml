@@ -1,0 +1,6 @@
+runtime: python310  # ใช้ Python 3.10
+entrypoint: gunicorn -b :$PORT app:app  # ใช้ gunicorn เพื่อรันแอปพลิเคชัน
+
+handlers:
+- url: /.*
+  script: auto
