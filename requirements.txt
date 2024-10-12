@@ -2,4 +2,4 @@ Flask
 Pillow
 roboflow
 pythainlp
-pytesseract
+easyocr
