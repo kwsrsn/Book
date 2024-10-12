@@ -19,9 +19,26 @@ header {
     background-color: #cfe2e3; /* Header background color */
 }
 
-header h1 {
-    font-size: 24px; /* Main header font size */
-    color: #333; /* Header text color */
+header .left-section {
+    display: grid;
+    gap: 10px;
+    justify-content: left;
+}
+
+h1 {
+    font-size: 22px; /* Main header font size */
+    color: #625d5d; /* Header text color */
+    margin-bottom: 20px;
+}
+
+.left-section .img-logo {
+    display: flex;
+    margin-top: -10px;
+}
+
+.img-logo img {
+    width: 40%;
+    height: auto;
 }
 
 header .right-section {
@@ -72,31 +89,36 @@ header #logout:hover {
 }
 
 main {
-    padding: 20px; /* Padding for main content */
+    padding: 30px; /* Padding for main content */
 }
 
 /* Centering the book grid */
 .book-grid {
+    /* display: grid; */
     display: grid;
+    flex-wrap: wrap;
     grid-template-columns: repeat(6, minmax(150px, 1fr)); /* Responsive columns minmax(200px, 1fr)*/
     gap: 20px; /* Space between grid items */
-    justify-items: center; /* Center items in each grid cell */
+    justify-content: space-around; /* justify-items: center; Center items in each grid cell */
 }
 
 .book {
-    background-color: #fff; /* Book background color */
+    background-color: #fff; /* Book backgroundt: color */
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
     display: flex;
+    flex: 1 0 150px;
+    box-sizing: border-box;
     justify-content: center;
     align-items: center;
     height: 250px; /* Default height */
-    width: 100%x; /* Full width of the grid cell  width: 250px */
+    width: 190px; /* Full width of the grid cell  width: 250px */
 }
 
 .book img {
-    max-width: 100%; /* Responsive image */
-    max-height: 100%;
+    width: 100%; /* Responsive image */
+    height: auto;
+    object-fit: cover;
     border-radius: 10px; /* Rounded corners for images */
 }
 
@@ -113,7 +135,8 @@ main {
     border-radius: 10px; /* Rounded corners */
     text-align: center;
     transition: background-color 0.3s ease; /* Hover effect */
-    width: 100%; /* Full width */
+    width: 190px; /* Full width */
+    height: 250px;
 }
 
 /* Hover effect for placeholder */
@@ -149,12 +172,252 @@ main {
     text-align: center;
 }
 
+@media screen and (max-width: 1119px) {
+    .book-grid {
+        display: grid;
+        flex-wrap: wrap;
+        grid-template-columns: repeat(5, minmax(150px, 1fr)); /* Responsive columns minmax(200px, 1fr)*/
+        gap: 20px; /* Space between grid items */
+        justify-content: space-around; /* justify-items: center; Center items in each grid cell */
+    }
+    .book {
+        background-color: #fff; /* Book backgroundt: color */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 250px; /* Default height */
+        width: 190px; /* Full width of the grid cell  width: 250px */
+    }
+    .book img {
+        width: 100%; /* Responsive image */
+        height: auto;
+        object-fit: cover;
+        border-radius: 10px; /* Rounded corners for images */
+    }
+    .placeholder {
+        background-color: #f4e0b6; /* Placeholder background color */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 3rem; /* Placeholder text size */
+        color: rgb(251, 191, 26); /* Placeholder text color */
+        border: none;
+        cursor: pointer;
+        padding: 10px 30px; /* Padding for placeholder */
+        border-radius: 10px; /* Rounded corners */
+        text-align: center;
+        transition: background-color 0.3s ease; /* Hover effect */
+        width: 190px; /* Full width */
+        height: 250px;
+    }
+    /* Hover effect for placeholder */
+    .book.placeholder:hover {
+        background-color: #e6cfa6; /* Lighter background on hover */
+        color: #ffa500; /* Lighter text color on hover */
+    }
+    .add{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:1007px) {
+    .book-grid {
+        display: grid;
+        flex-wrap: wrap;
+        grid-template-columns: repeat(4, minmax(150px, 1fr)); /* Responsive columns minmax(200px, 1fr)*/
+        gap: 20px; /* Space between grid items */
+        justify-content: space-around; /* justify-items: center; Center items in each grid cell */
+    }
+    .book {
+        background-color: #fff; /* Book backgroundt: color */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 250px; /* Default height */
+        width: 190px; /* Full width of the grid cell  width: 250px */
+    }
+    .book img {
+        width: 100%; /* Responsive image */
+        height: auto;
+        object-fit: cover;
+        border-radius: 10px; /* Rounded corners for images */
+    }
+    .placeholder {
+        background-color: #f4e0b6; /* Placeholder background color */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 3rem; /* Placeholder text size */
+        color: rgb(251, 191, 26); /* Placeholder text color */
+        border: none;
+        cursor: pointer;
+        padding: 10px 30px; /* Padding for placeholder */
+        border-radius: 10px; /* Rounded corners */
+        text-align: center;
+        transition: background-color 0.3s ease; /* Hover effect */
+        width: 190px; /* Full width */
+        height: 250px;
+    }
+    /* Hover effect for placeholder */
+    .book.placeholder:hover {
+        background-color: #e6cfa6; /* Lighter background on hover */
+        color: #ffa500; /* Lighter text color on hover */
+    }
+    .add{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 820px) {
+    .book-grid {
+        display: grid;
+        flex-wrap: wrap;
+        grid-template-columns: repeat(3, minmax(150px, 1fr)); /* Responsive columns minmax(200px, 1fr)*/
+        gap: 20px; /* Space between grid items */
+        justify-content: space-around; /* justify-items: center; Center items in each grid cell */
+    }
+    .book {
+        background-color: #fff; /* Book backgroundt: color */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 250px; /* Default height */
+        width: 190px; /* Full width of the grid cell  width: 250px */
+    }
+    .book img {
+        width: 100%; /* Responsive image */
+        height: auto;
+        object-fit: cover;
+        border-radius: 10px; /* Rounded corners for images */
+    }
+    .placeholder {
+        background-color: #f4e0b6; /* Placeholder background color */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 3rem; /* Placeholder text size */
+        color: rgb(251, 191, 26); /* Placeholder text color */
+        border: none;
+        cursor: pointer;
+        padding: 10px 30px; /* Padding for placeholder */
+        border-radius: 10px; /* Rounded corners */
+        text-align: center;
+        transition: background-color 0.3s ease; /* Hover effect */
+        width: 190px; /* Full width */
+        height: 250px;
+    }
+    /* Hover effect for placeholder */
+    .book.placeholder:hover {
+        background-color: #e6cfa6; /* Lighter background on hover */
+        color: #ffa500; /* Lighter text color on hover */
+    }
+    .add{
+        width: 100%;
+    }
+}
 
 @media screen and (max-width: 767px) {
     .book-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(150px, 1fr)); /* Responsive columns */
+        flex-wrap: wrap;
+        grid-template-columns: repeat(3, minmax(150px, 1fr)); /* Responsive columns minmax(200px, 1fr)*/
         gap: 20px; /* Space between grid items */
-        justify-items: center; /* Center items in each grid cell */
+        justify-content: space-around; /* justify-items: center; Center items in each grid cell */
+    }
+    .book {
+        background-color: #fff; /* Book backgroundt: color */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 250px; /* Default height */
+        width: 190px; /* Full width of the grid cell  width: 250px */
+    }
+    .book img {
+        width: 100%; /* Responsive image */
+        height: auto;
+        object-fit: cover;
+        border-radius: 10px; /* Rounded corners for images */
+    }
+    .placeholder {
+        background-color: #f4e0b6; /* Placeholder background color */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 3rem; /* Placeholder text size */
+        color: rgb(251, 191, 26); /* Placeholder text color */
+        border: none;
+        cursor: pointer;
+        padding: 10px 30px; /* Padding for placeholder */
+        border-radius: 10px; /* Rounded corners */
+        text-align: center;
+        transition: background-color 0.3s ease; /* Hover effect */
+        width: 190px; /* Full width */
+        height: 250px;
+    }
+    /* Hover effect for placeholder */
+    .book.placeholder:hover {
+        background-color: #e6cfa6; /* Lighter background on hover */
+        color: #ffa500; /* Lighter text color on hover */
+    }
+    .add{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .book-grid {
+        display: grid;
+        flex-wrap: wrap;
+        grid-template-columns: repeat(2, minmax(150px, 1fr)); /* Responsive columns minmax(200px, 1fr)*/
+        gap: 20px; /* Space between grid items */
+        justify-content: space-around; /* justify-items: center; Center items in each grid cell */
+    }
+    .book {
+        background-color: #fff; /* Book backgroundt: color */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 250px; /* Default height */
+        width: 190px; /* Full width of the grid cell  width: 250px */
+    }
+    .book img {
+        width: 100%; /* Responsive image */
+        height: auto;
+        object-fit: cover;
+        border-radius: 10px; /* Rounded corners for images */
+    }
+    .placeholder {
+        background-color: #f4e0b6; /* Placeholder background color */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 3rem; /* Placeholder text size */
+        color: rgb(251, 191, 26); /* Placeholder text color */
+        border: none;
+        cursor: pointer;
+        padding: 10px 30px; /* Padding for placeholder */
+        border-radius: 10px; /* Rounded corners */
+        text-align: center;
+        transition: background-color 0.3s ease; /* Hover effect */
+        width: 190px; /* Full width */
+        height: 250px;
+    }
+    /* Hover effect for placeholder */
+    .book.placeholder:hover {
+        background-color: #e6cfa6; /* Lighter background on hover */
+        color: #ffa500; /* Lighter text color on hover */
+    }
+    .add{
+        width: 100%;
     }
 }

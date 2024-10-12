@@ -23,7 +23,7 @@ header {
 
 header h1 {
     font-size: 24px; /* Main header font size */
-    color: #333; /* Header text color */
+    color: #625d5d; /* Header text color */
 }
 
 header .right-section {
@@ -86,7 +86,7 @@ main {
 }
 
 .drag-area {
-    height: 300px; /* Height of the drag area */
+    height: 260px; /* Height of the drag area */
     border: 3px dashed #e0eafc; /* Dashed border */
     display: flex;
     align-items: center;
@@ -134,13 +134,13 @@ h3 {
     align-items: center;
     justify-content: center;
     margin: auto; /* Center the button */
-    padding: 6px 22px; /* Padding */
+    padding: 10px 27px; /* Padding */
     background: hsl(172, 23%, 68%); /* Button background color */
-    border-radius: 10px; /* Rounded corners */
+    border-radius: 16px; /* Rounded corners */
     color: #252525; /* Text color */
     border: none; /* Remove border */
-    font-size: 12px; /* Font size */
-    font-weight: 400; /* Font weight */
+    font-size: 18px; /* Font size */
+    font-weight: 600; /* Font weight */
     cursor: pointer; /* Cursor style */
     transition: background-color 0.3s ease; /* Transition effect */
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Box shadow */
@@ -203,6 +203,34 @@ a {
     border-radius: 15px;
 }
 
+.loader-message {
+    background: #FFFDF9;
+    padding: 30px;
+    max-width: 300px;
+    width: 100%;
+    height: 150px;
+    display: flex; /* ใช้ flexbox */
+    justify-content: center; /* จัดกลางแนวนอน */
+    align-items: center; /* จัดกลางแนวตั้ง */
+    text-align: center; /* จัดกลางข้อความ */
+    margin-top: 100px; /* เพิ่ม padding เพื่อให้ดูดีขึ้น */
+    border: 3px solid #FFFDF9; 
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.126);
+    position: relative;
+}
+
+.loader-message span {
+    font-size: 18px;
+    font-weight: 200;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,50%);
+    z-index: 0;
+}
+
 #uploadStatus {
     position: fixed; /* ติดตำแหน่งที่หน้าจอ */
     top: 50%; 
@@ -211,9 +239,24 @@ a {
     height: 100%;
     background: #fff6e7c0; /* พื้นหลังสีดำโปร่งใส */
     transform: translate(-50%, -50%);
-    display: flex;
+    display: inline-block;
     justify-content: center; /* จัดกลางแนวนอน */
     align-items: center; /* จัดกลางแนวตั้ง */
     z-index: 9999; /* อยู่เหนือเนื้อหาอื่น */
     color: rgb(0, 0, 0);
+}
+
+.loader-message .img-gif {
+    display: flex;
+    justify-items: center;
+}
+
+.img-gif img {
+    width: 20%;
+    height: auto;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 1;
 }
