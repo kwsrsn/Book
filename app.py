@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, jsonify
 from werkzeug.utils import secure_filename
 import logging
-import pytesseract
+import easyocr
 from roboflow import Roboflow
 import numpy as np
 from PIL import Image as PILImage, ExifTags
