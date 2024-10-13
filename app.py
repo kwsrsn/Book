@@ -8,6 +8,8 @@ from PIL import Image as PILImage, ExifTags
 import os
 from pythainlp import word_tokenize
 import threading
+import streamlit as st
+import requests
 
 corrections_file = "corrections.txt"
 
@@ -139,5 +141,20 @@ def correct_ocr_result(proc, corrections):
     # Join the corrected results into a single string
     return "".join(corrected_results)
 
+#if __name__ == '__main__':
+    #app.run(port=5000)
+
+@app.route('/api/data', methods=['GET'])
+def api_data():
+    return jsonify({"message": "This is data from Flask API!"})
+
+def main():
+    st.title("Streamlit with Flask")
+    st.write("This is the Streamlit interface.")
+    if st.button('Fetch API Data'):
+        # ตัวอย่างเรียก API Flask
+        response = requests.get("http://localhost:5000/api/data")
+        st.write(response.json())
+
 if __name__ == '__main__':
-    app.run(port=5000)
+    main()
