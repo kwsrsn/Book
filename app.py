@@ -7,6 +7,7 @@ import numpy as np
 from PIL import Image as PILImage, ExifTags
 import os
 from pythainlp import word_tokenize
+import threading
 
 corrections_file = "corrections.txt"
 
@@ -138,5 +139,9 @@ def correct_ocr_result(proc, corrections):
     # Join the corrected results into a single string
     return "".join(corrected_results)
 
+def run_streamlit():
+    os.system("streamlit run app_streamlit.py")
+
 if __name__ == '__main__':
-    app.run(port=5000)
+    threading.Thread(target=run_streamlit).start()
+    app.run(debug=True)
