@@ -139,4 +139,4 @@ def correct_ocr_result(proc, corrections):
     return "".join(corrected_results)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5000)

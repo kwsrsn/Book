@@ -3,3 +3,5 @@ Pillow
 roboflow
 pythainlp
 easyocr
+streamlit
+requests
